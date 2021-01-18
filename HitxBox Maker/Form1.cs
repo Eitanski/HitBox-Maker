@@ -53,7 +53,8 @@ namespace HitxBox_Maker
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            string path = "C:\\Users\\משתמש\\Desktop\\HitxBox Maker\\HitxBox Maker\\frames";
+            //string path = "C:\\Users\\משתמש\\Desktop\\HitxBox Maker\\HitxBox Maker\\frames";
+            string path = "..\\..\\frames";
             string[] frames = Directory.GetFiles(path);
             device = CreateGraphics();
             atlas = Image.FromFile(frames[0]);
