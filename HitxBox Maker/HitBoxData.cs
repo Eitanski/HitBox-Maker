@@ -26,5 +26,32 @@ namespace HitxBox_Maker
 
         }
 
-    }
+        public string GreenToString()
+        {
+            string res = "";
+
+            float w = Form1.frameWidth * Form1.inc;
+            float h = Form1.frameHeight * Form1.inc;
+
+            if (GreenHitBoxes.Any())
+                foreach (Rectangle rect in GreenHitBoxes)
+                    res += "X: " + (float)(rect.X - Form1.posX) / w + " Y: " + (float)(rect.Y - Form1.posY) / h + " Width: " + (float)rect.Width / w + " Height: " + (float)rect.Height / h + '\n';
+
+            return res;
+        }
+
+        public string RedToString()
+        {
+            string res = "";
+
+            float w = Form1.frameWidth * Form1.inc;
+            float h = Form1.frameHeight * Form1.inc;
+
+            if (RedHitBoxes.Any())
+                foreach (Rectangle rect in RedHitBoxes)
+                    res += "X: " + (float)(rect.X - Form1.posX) / w + " Y: " + (float)(rect.Y - Form1.posY) / h + " Width: " + (float)rect.Width / w + " Height: " + (float)rect.Height / h + '\n';
+
+            return res;
+        }
+}
 }

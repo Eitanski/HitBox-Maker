@@ -18,13 +18,15 @@ namespace HitxBox_Maker
 
         private int amount = 8;
 
-        private int frameHeight;
+        static public int frameHeight;
         
-        private int frameWidth;
-        
+        static public int frameWidth;
+
+        static public int posX, posY;
+
         private int fix = 280;
         
-        private float inc = 5.0f;
+        public static float inc = 5.0f;
 
         private int count = -1;
 
@@ -34,14 +36,14 @@ namespace HitxBox_Maker
 
         private bool mode = true;
 
-        private bool pre = true;
-
         List<HitBoxData> hitBoxDataArray = new List<HitBoxData>();
 
         List<bool> bools = new List<bool>();
 
         Rectangle tmp;
 
+        public static int heighto;
+        public static int widtho;
 
         public Form1()
         {
@@ -53,7 +55,6 @@ namespace HitxBox_Maker
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //string path = "C:\\Users\\משתמש\\Desktop\\HitxBox Maker\\HitxBox Maker\\frames";
             string path = "..\\..\\frames";
             string[] frames = Directory.GetFiles(path);
             device = CreateGraphics();
@@ -62,7 +63,11 @@ namespace HitxBox_Maker
             frameWidth = atlas.Width / amount;
             frameHeight = atlas.Height;
 
+            posX = frameWidth - fix;
+            posY = -200;
+
             InitHitBoxData();
+
         }
 
         private void Retrieve()
@@ -71,7 +76,7 @@ namespace HitxBox_Maker
             
             if (count >= 0)
             {
-                device.DrawImage(atlas, new RectangleF(new PointF(frameWidth - fix, -200), new SizeF(frameWidth * inc, frameHeight * inc)), new RectangleF(new PointF(frameWidth * count, 0), new SizeF(frameWidth, frameHeight)), GraphicsUnit.Pixel);
+                device.DrawImage(atlas, new RectangleF(new PointF(posX, posY), new SizeF(frameWidth * inc, frameHeight * inc)), new RectangleF(new PointF(frameWidth * count, 0), new SizeF(frameWidth, frameHeight)), GraphicsUnit.Pixel);
 
                 Pen pen = new Pen(Color.LimeGreen, 1);
 
@@ -134,6 +139,7 @@ namespace HitxBox_Maker
         {
             count++;
             Attain();
+            Retrieve();
         }
 
         private void btnPrev_Click(object sender, EventArgs e)
@@ -141,6 +147,7 @@ namespace HitxBox_Maker
             count--;
             if (count < 0) count = 0;
             Attain();
+            Retrieve();
         }
 
         private void InitHitBoxData()
@@ -182,13 +189,41 @@ namespace HitxBox_Maker
                 Refresh();
         }
 
+        private void btnExport_Click(object sender, EventArgs e)
+        {
+            string fileName = "..\\..\\export.txt";
+
+            if (File.Exists(fileName))
+            {
+                File.Delete(fileName);
+            }
+ 
+            FileStream fs = File.Create(fileName);
+
+            string data = "";
+            int i = 0;
+
+            data += "#GREEN#\n\n";
+
+            foreach (HitBoxData box in hitBoxDataArray)
+                data += "---------------------------------\nFRAME " + ++i + "\n\n" + box.GreenToString();
+
+            data += "\n\n#RED#\n\n";
+
+            i = 0;
+            foreach (HitBoxData box in hitBoxDataArray)
+                data += "---------------------------------\nFRAME " + ++i + "\n\n" + box.RedToString();
+
+            byte[] tmp = new UTF8Encoding(true).GetBytes(data);
+            fs.Write(tmp, 0, tmp.Length);
+
+            fs.Close();
+        }
+
         private void Attain()
         {
             count %= amount;
             lblFrame.Text = (count + 1).ToString();
-
-            Refresh();
-            device.DrawImage(atlas, new RectangleF(new PointF(frameWidth - fix, -200), new SizeF(frameWidth * inc, frameHeight * inc)), new RectangleF(new PointF(frameWidth * count, 0), new SizeF(frameWidth, frameHeight)), GraphicsUnit.Pixel);
         }
     }
 }
