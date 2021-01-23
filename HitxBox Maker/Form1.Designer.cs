@@ -37,6 +37,8 @@ namespace HitxBox_Maker
             this.btnNext = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.lblFrame = new System.Windows.Forms.Label();
+            this.btnMerge = new System.Windows.Forms.Button();
+            this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.SuspendLayout();
             // 
             // lblFrm
@@ -64,7 +66,7 @@ namespace HitxBox_Maker
             // 
             this.btnExport.Location = new System.Drawing.Point(668, 274);
             this.btnExport.Name = "btnExport";
-            this.btnExport.Size = new System.Drawing.Size(120, 128);
+            this.btnExport.Size = new System.Drawing.Size(120, 60);
             this.btnExport.TabIndex = 2;
             this.btnExport.Text = "Export";
             this.btnExport.UseVisualStyleBackColor = true;
@@ -122,12 +124,27 @@ namespace HitxBox_Maker
             this.lblFrame.Text = "0";
             this.lblFrame.UseWaitCursor = true;
             // 
+            // btnMerge
+            // 
+            this.btnMerge.Location = new System.Drawing.Point(668, 342);
+            this.btnMerge.Name = "btnMerge";
+            this.btnMerge.Size = new System.Drawing.Size(120, 60);
+            this.btnMerge.TabIndex = 8;
+            this.btnMerge.Text = "Merge";
+            this.btnMerge.UseVisualStyleBackColor = true;
+            this.btnMerge.Click += new System.EventHandler(this.btnMerge_Click);
+            // 
+            // ofd
+            // 
+            this.ofd.InitialDirectory = "C:\\Users\\משתמש\\Desktop\\Game1\\Game1\\Content";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
             this.ClientSize = new System.Drawing.Size(800, 414);
+            this.Controls.Add(this.btnMerge);
             this.Controls.Add(this.lblFrame);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnNext);
@@ -155,6 +172,8 @@ namespace HitxBox_Maker
         private System.Windows.Forms.Button btnNext;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Label lblFrame;
+        private System.Windows.Forms.Button btnMerge;
+        private System.Windows.Forms.OpenFileDialog ofd;
     }
 }
 

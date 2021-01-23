@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace HitxBox_Maker
 {
@@ -36,6 +38,10 @@ namespace HitxBox_Maker
 
         private bool mode = true;
 
+        private string animationName;
+
+        private string ChampionName;
+
         List<HitBoxData> hitBoxDataArray = new List<HitBoxData>();
 
         List<bool> bools = new List<bool>();
@@ -55,10 +61,17 @@ namespace HitxBox_Maker
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            string path = "..\\..\\frames";
-            string[] frames = Directory.GetFiles(path);
             device = CreateGraphics();
-            atlas = Image.FromFile(frames[0]);
+
+            InitHitBoxData();
+
+            ofd.Filter = "PNG Image|*.png|JPEG Image|*.jpeg";
+            if(ofd.ShowDialog() == DialogResult.OK)
+            {
+                atlas = Image.FromFile(ofd.FileName);
+                animationName = Path.GetFileNameWithoutExtension(ofd.FileName);
+                ChampionName = Path.GetFileName(Path.GetDirectoryName(ofd.FileName));
+            }
 
             frameWidth = atlas.Width / amount;
             frameHeight = atlas.Height;
@@ -66,8 +79,9 @@ namespace HitxBox_Maker
             posX = frameWidth - fix;
             posY = -200;
 
-            InitHitBoxData();
-
+            WindowState = FormWindowState.Minimized;
+            Show();
+            WindowState = FormWindowState.Normal;
         }
 
         private void Retrieve()
@@ -160,7 +174,7 @@ namespace HitxBox_Maker
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (count >= 0)
+            if (count >= 0 && !hitBoxDataArray[count].RedHitBoxes.Contains(tmp) && !hitBoxDataArray[count].GreenHitBoxes.Contains(tmp))
             {
                 if (mode) hitBoxDataArray[count].GreenHitBoxes.Add(tmp);
                 else hitBoxDataArray[count].RedHitBoxes.Add(tmp);
@@ -189,35 +203,54 @@ namespace HitxBox_Maker
                 Refresh();
         }
 
+        private void btnMerge_Click(object sender, EventArgs e)
+        {
+            string fileName = @"C:\Users\משתמש\Desktop\Game1\Game1\Hitboxes.json";
+            
+            if(File.Exists(fileName))
+            {
+                File.Delete(fileName);
+            }
+
+            JObject jsonData = new JObject();
+            JObject tmpObj;
+            string[] dirPaths = Directory.GetDirectories(@"..\..\exports\");
+            string[] tmp;
+            foreach (string dirPath in dirPaths)
+            {
+                tmp = Directory.GetFiles(dirPath);
+                tmpObj = new JObject();
+                foreach (string filePath in tmp)
+                {
+                    tmpObj.Add(new JProperty(Path.GetFileNameWithoutExtension(filePath), JArray.Parse(File.ReadAllText(filePath))));
+                }
+                jsonData.Add(Path.GetFileName(dirPath), tmpObj);
+            }
+            
+            File.WriteAllText(fileName, jsonData.ToString());
+        }
+
         private void btnExport_Click(object sender, EventArgs e)
         {
-            string fileName = "..\\..\\export.txt";
+            string fileName = @"..\..\exports\" + ChampionName + "\\" + animationName + ".json";
 
             if (File.Exists(fileName))
             {
                 File.Delete(fileName);
             }
- 
-            FileStream fs = File.Create(fileName);
 
-            string data = "";
             int i = 0;
-
-            data += "#GREEN#\n\n";
-
+            JArray jsonData = new JArray();
+            JObject tmpFrame;
             foreach (HitBoxData box in hitBoxDataArray)
-                data += "---------------------------------\nFRAME " + ++i + "\n\n" + box.GreenToString();
+            {
+                tmpFrame = new JObject();
+                tmpFrame.Add(new JProperty("Green", box.AquireGreenJsonData()));
+                tmpFrame.Add(new JProperty("Red", box.AquireRedJsonData()));
+                jsonData.Add(tmpFrame); 
+            }
 
-            data += "\n\n#RED#\n\n";
-
-            i = 0;
-            foreach (HitBoxData box in hitBoxDataArray)
-                data += "---------------------------------\nFRAME " + ++i + "\n\n" + box.RedToString();
-
-            byte[] tmp = new UTF8Encoding(true).GetBytes(data);
-            fs.Write(tmp, 0, tmp.Length);
-
-            fs.Close();
+            File.WriteAllText(fileName, jsonData.ToString());
         }
 
         private void Attain()
