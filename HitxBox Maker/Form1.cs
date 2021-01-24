@@ -205,7 +205,7 @@ namespace HitxBox_Maker
 
         private void btnMerge_Click(object sender, EventArgs e)
         {
-            string fileName = @"C:\Users\משתמש\Desktop\Game1\Game1\Hitboxes.json";
+            string fileName = @"C:\Users\USER\Desktop\Way-of-The-Sword\Game1\Hitboxes.json";
             
             if(File.Exists(fileName))
             {
@@ -227,7 +227,7 @@ namespace HitxBox_Maker
                 jsonData.Add(Path.GetFileName(dirPath), tmpObj);
             }
             
-            File.WriteAllText(fileName, jsonData.ToString());
+            File.WriteAllText(fileName, jsonData.ToString(Formatting.None));
         }
 
         private void btnExport_Click(object sender, EventArgs e)
@@ -250,7 +250,7 @@ namespace HitxBox_Maker
                 jsonData.Add(tmpFrame); 
             }
 
-            File.WriteAllText(fileName, jsonData.ToString());
+            File.WriteAllText(fileName, jsonData.ToString(Formatting.None));
         }
 
         private void Attain()

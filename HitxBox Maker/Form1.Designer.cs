@@ -136,7 +136,7 @@ namespace HitxBox_Maker
             // 
             // ofd
             // 
-            this.ofd.InitialDirectory = "C:\\Users\\משתמש\\Desktop\\Game1\\Game1\\Content";
+            this.ofd.InitialDirectory = "C:\\Users\\USER\\Desktop\\Way-of-The-Sword\\Game1\\Content";
             // 
             // Form1
             // 
