@@ -54,7 +54,7 @@ namespace HitxBox_Maker
             // 
             // btnMode
             // 
-            this.btnMode.Location = new System.Drawing.Point(668, 143);
+            this.btnMode.Location = new System.Drawing.Point(1093, 143);
             this.btnMode.Name = "btnMode";
             this.btnMode.Size = new System.Drawing.Size(120, 125);
             this.btnMode.TabIndex = 1;
@@ -64,7 +64,7 @@ namespace HitxBox_Maker
             // 
             // btnExport
             // 
-            this.btnExport.Location = new System.Drawing.Point(668, 274);
+            this.btnExport.Location = new System.Drawing.Point(1093, 274);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(120, 60);
             this.btnExport.TabIndex = 2;
@@ -74,7 +74,7 @@ namespace HitxBox_Maker
             // 
             // btnUndo
             // 
-            this.btnUndo.Location = new System.Drawing.Point(668, 12);
+            this.btnUndo.Location = new System.Drawing.Point(1093, 12);
             this.btnUndo.Name = "btnUndo";
             this.btnUndo.Size = new System.Drawing.Size(120, 125);
             this.btnUndo.TabIndex = 3;
@@ -126,7 +126,7 @@ namespace HitxBox_Maker
             // 
             // btnMerge
             // 
-            this.btnMerge.Location = new System.Drawing.Point(668, 342);
+            this.btnMerge.Location = new System.Drawing.Point(1093, 342);
             this.btnMerge.Name = "btnMerge";
             this.btnMerge.Size = new System.Drawing.Size(120, 60);
             this.btnMerge.TabIndex = 8;
@@ -136,14 +136,14 @@ namespace HitxBox_Maker
             // 
             // ofd
             // 
-            this.ofd.InitialDirectory = "C:\\Users\\USER\\Desktop\\Way-of-The-Sword\\Game1\\Content";
+            this.ofd.InitialDirectory = "C:\\Users\\משתמש\\Desktop\\Game1\\Game1\\Content";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
-            this.ClientSize = new System.Drawing.Size(800, 414);
+            this.ClientSize = new System.Drawing.Size(1225, 414);
             this.Controls.Add(this.btnMerge);
             this.Controls.Add(this.lblFrame);
             this.Controls.Add(this.btnSave);

@@ -18,7 +18,7 @@ namespace HitxBox_Maker
         private Image atlas; 
         private Graphics device;
 
-        private int amount = 8;
+        private int amount;
 
         static public int frameHeight;
         
@@ -63,8 +63,6 @@ namespace HitxBox_Maker
         {
             device = CreateGraphics();
 
-            InitHitBoxData();
-
             ofd.Filter = "PNG Image|*.png|JPEG Image|*.jpeg";
             if(ofd.ShowDialog() == DialogResult.OK)
             {
@@ -73,12 +71,16 @@ namespace HitxBox_Maker
                 ChampionName = Path.GetFileName(Path.GetDirectoryName(ofd.FileName));
             }
 
-            frameWidth = atlas.Width / amount;
-            frameHeight = atlas.Height;
+            amount = atlas.Width / 200;
+            frameWidth = 200;
+            frameHeight = 200;
 
-            posX = frameWidth - fix;
+            //posX = frameWidth - fix;
+            posX = (int)(Width / 2 - frameWidth * inc/2);
             posY = -200;
 
+            InitHitBoxData();
+            
             WindowState = FormWindowState.Minimized;
             Show();
             WindowState = FormWindowState.Normal;
@@ -205,7 +207,7 @@ namespace HitxBox_Maker
 
         private void btnMerge_Click(object sender, EventArgs e)
         {
-            string fileName = @"C:\Users\USER\Desktop\Way-of-The-Sword\Game1\Hitboxes.json";
+            string fileName = @"C:\Users\משתמש\Desktop\Game1\Game1\Hitboxes.json";
             
             if(File.Exists(fileName))
             {
@@ -229,7 +231,6 @@ namespace HitxBox_Maker
             
             File.WriteAllText(fileName, jsonData.ToString(Formatting.None));
         }
-
         private void btnExport_Click(object sender, EventArgs e)
         {
             string fileName = @"..\..\exports\" + ChampionName + "\\" + animationName + ".json";
