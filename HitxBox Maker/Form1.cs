@@ -25,8 +25,6 @@ namespace HitxBox_Maker
         static public int frameWidth;
 
         static public int posX, posY;
-
-        private int fix = 280;
         
         public static float inc = 5.0f;
 
@@ -41,6 +39,8 @@ namespace HitxBox_Maker
         private string animationName;
 
         private string ChampionName;
+
+        private int increment;
 
         List<HitBoxData> hitBoxDataArray = new List<HitBoxData>();
 
@@ -57,6 +57,9 @@ namespace HitxBox_Maker
             MouseDown += new MouseEventHandler(Form1_MouseDown);
             MouseMove += new MouseEventHandler(Form1_MouseMove);
             MouseUp += new MouseEventHandler(Form1_MouseUp);
+
+            string CombinedPath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "..\\..\\assets");
+            ofd.InitialDirectory = System.IO.Path.GetFullPath(CombinedPath);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -71,13 +74,24 @@ namespace HitxBox_Maker
                 ChampionName = Path.GetFileName(Path.GetDirectoryName(ofd.FileName));
             }
 
-            amount = atlas.Width / 200;
-            frameWidth = 200;
-            frameHeight = 200;
+            if(ChampionName == "Feng") 
+            {
+                frameWidth = 200;
+                frameHeight = 200;
+                increment = 0;
+            }
+            else if(ChampionName == "Knight")
+            {
+                frameWidth = 100;
+                frameHeight = 55;
+                increment = 100;
+            }
 
-            //posX = frameWidth - fix;
+
+            amount = atlas.Width / frameWidth;
+
             posX = (int)(Width / 2 - frameWidth * inc/2);
-            posY = -200;
+            posY = -frameHeight + increment;
 
             InitHitBoxData();
             
@@ -207,9 +221,10 @@ namespace HitxBox_Maker
 
         private void btnMerge_Click(object sender, EventArgs e)
         {
-            string fileName = @"C:\Users\משתמש\Desktop\Game1\Game1\Hitboxes.json";
-            
-            if(File.Exists(fileName))
+            string fileName = @"C:\Users\משתמש\Desktop\way\Game1\Game1\Hitboxes.json";
+            string fileNameForServer = @"C:\Users\משתמש\Desktop\way\Game1\GameServer\Hitboxes.json";
+
+            if (File.Exists(fileName))
             {
                 File.Delete(fileName);
             }
@@ -230,28 +245,44 @@ namespace HitxBox_Maker
             }
             
             File.WriteAllText(fileName, jsonData.ToString(Formatting.None));
+            File.WriteAllText(fileNameForServer, jsonData.ToString(Formatting.None));
         }
         private void btnExport_Click(object sender, EventArgs e)
         {
             string fileName = @"..\..\exports\" + ChampionName + "\\" + animationName + ".json";
+
+            string leftName = @"..\..\exports\" + ChampionName + "\\" + animationName.Substring(0, animationName.IndexOf('_') + 1) + "Left" + ".json";
 
             if (File.Exists(fileName))
             {
                 File.Delete(fileName);
             }
 
-            int i = 0;
+            if (File.Exists(leftName))
+            {
+                File.Delete(leftName);
+            }
+
             JArray jsonData = new JArray();
             JObject tmpFrame;
+
+            JArray jsonDataLeft = new JArray();
             foreach (HitBoxData box in hitBoxDataArray)
             {
                 tmpFrame = new JObject();
                 tmpFrame.Add(new JProperty("Green", box.AquireGreenJsonData()));
                 tmpFrame.Add(new JProperty("Red", box.AquireRedJsonData()));
-                jsonData.Add(tmpFrame); 
+                jsonData.Add(tmpFrame);
+
+                tmpFrame = new JObject();
+
+                tmpFrame.Add(new JProperty("Green", box.AquireMirroredGreenJsonData()));
+                tmpFrame.Add(new JProperty("Red", box.AquireMirroredRedJsonData()));
+                jsonDataLeft.Add(tmpFrame);
             }
 
             File.WriteAllText(fileName, jsonData.ToString(Formatting.None));
+            File.WriteAllText(leftName, jsonDataLeft.ToString(Formatting.None));
         }
 
         private void Attain()

@@ -43,7 +43,7 @@ namespace HitxBox_Maker
                     tmp.Add(new JProperty("X", (float)(rect.X - Form1.posX) / w));
                     tmp.Add(new JProperty("Y", (float)(rect.Y - Form1.posY) / h));
                     tmp.Add(new JProperty("W", (float)rect.Width / w));
-                    tmp.Add(new JProperty("H", (float)rect.Width / h));
+                    tmp.Add(new JProperty("H", (float)rect.Height / h));
                     jsonData.Add(tmp);
                 }
 
@@ -65,11 +65,68 @@ namespace HitxBox_Maker
                     tmp.Add(new JProperty("X", (float)(rect.X - Form1.posX) / w));
                     tmp.Add(new JProperty("Y", (float)(rect.Y - Form1.posY) / h));
                     tmp.Add(new JProperty("W", (float)rect.Width / w));
-                    tmp.Add(new JProperty("H", (float)rect.Width / h));
+                    tmp.Add(new JProperty("H", (float)rect.Height / h));
                     jsonData.Add(tmp);
                 }
 
             return jsonData;
         }
-}
+        public JArray AquireMirroredGreenJsonData()
+        {
+            JArray jsonData = new JArray();
+            JObject tmp;
+
+            float w = Form1.frameWidth * Form1.inc;
+            float h = Form1.frameHeight * Form1.inc;
+
+            int realX, realY;
+
+            if (GreenHitBoxes.Any())
+                foreach (Rectangle rect in GreenHitBoxes)
+                {
+                    realX = rect.X - Form1.posX;
+                    realY = rect.Y - Form1.posY;
+
+                    realX = (int)w - realX - rect.Width;
+
+                    tmp = new JObject();
+                    tmp.Add(new JProperty("X", (float)realX / w));
+                    tmp.Add(new JProperty("Y", (float)realY / h));
+                    tmp.Add(new JProperty("W", (float)rect.Width / w));
+                    tmp.Add(new JProperty("H", (float)rect.Height / h));
+                    jsonData.Add(tmp);
+                }
+
+            return jsonData;
+        }
+
+        public JArray AquireMirroredRedJsonData()
+        {
+            JArray jsonData = new JArray();
+            JObject tmp = new JObject();
+
+            float w = Form1.frameWidth * Form1.inc;
+            float h = Form1.frameHeight * Form1.inc;
+
+            int realX, realY;
+
+            if (RedHitBoxes.Any())
+                foreach (Rectangle rect in RedHitBoxes)
+                {
+                    realX = rect.X - Form1.posX;
+                    realY = rect.Y - Form1.posY;
+
+                    realX = (int)w - realX - rect.Width;
+                    
+                    tmp = new JObject();
+                    tmp.Add(new JProperty("X", (float)realX / w));
+                    tmp.Add(new JProperty("Y", (float)realY / h));
+                    tmp.Add(new JProperty("W", (float)rect.Width / w));
+                    tmp.Add(new JProperty("H", (float)rect.Height / h));
+                    jsonData.Add(tmp);
+                }
+
+            return jsonData;
+        }
+    }
 }

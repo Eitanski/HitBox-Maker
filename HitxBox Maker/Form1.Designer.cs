@@ -134,10 +134,6 @@ namespace HitxBox_Maker
             this.btnMerge.UseVisualStyleBackColor = true;
             this.btnMerge.Click += new System.EventHandler(this.btnMerge_Click);
             // 
-            // ofd
-            // 
-            this.ofd.InitialDirectory = "C:\\Users\\משתמש\\Desktop\\Game1\\Game1\\Content";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
